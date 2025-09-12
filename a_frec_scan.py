@@ -6,7 +6,7 @@ The location of amp_tools_2 can by added using sys.path.append() or could be ins
 '''
 
 import sys
-sys.path.append(r'G:\Mi unidad\Medidas Doctorado\Microscopio 2\28Dic22')
+sys.path.append(r'folder')
 import amp_tools_2_07 as amp
 import matplotlib.pyplot as plt
 import numpy as np
