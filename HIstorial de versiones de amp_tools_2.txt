@@ -1,0 +1,67 @@
+2.07 Sequences were fixed to allow sine fitting. There are still some things missing in the output file.
+
+2.06 The Major radius was added as an element saved in savez.
+2.05 A warning was added when no matching aggregates were found.
+2.04 A bug in the main loop was fixed. If it didn't pass through the filter, it wouldn't reset the lists.
+2.03 A bug was fixed in ag_popper for aggregates with n<=9, which selected the entire ten (i.e., if 1 was selected, 10, 11, etc. would appear).
+2.02 The curve saver was fixed. It was moved to the ag_plot() function.
+2.01 ag_popper: replaced if any() with if STR in a.label.
+2.0 The entire script was moved to functions. It should be verified that it works correctly when imported.
+1.64 Single Plot now uses Remove instead of Pop, preventing the deletion of extra curves.
+1.63 Added the self.area attribute to the addp method of the AggregateTime class.
+Added the area in the variable saver.
+1.62 Fixed the variable to be saved in the saver. It now saves individually, not the average.
+1.61 Improved the saver for the Amp and Offset variables.
+1.6 Added the Amp and Phase saver at the end, and the offset in pi for the field.
+1.56 Added the frequency in seconds and the number of aggregates in the printout.
+1.55 Fixed the phi0 of the adjustments to go from -pi to pi.
+1.5 Added the average curve of the adjustments to the graphs.
+1.4.3 Automated the curve saving path
+1.4.21 Changed the curve saving path
+Modified SIGLE PLOT TESTER to graph more than one curve
+1.4.2 Curve saver cell shift
+1.4.1 Additional correction for aggregate angles (<-90)
+Corrected the curve savetxt header
+1.4 Added the option to save aggregate curves
+1.36.1 Added the Amplitude error (considering dispersion)
+1.36: Added the error in mean phi0 and the offset
+1.35: Added figure 79 for aggregates between 10 and 20
+1.3: Separated the total and figures into two figures plus aggregate adjustments from 0 to 10
+Added statements to verify isolated curves.
+
+
+2.07   Se corrigieron secuencias para poder ajustar con seno. Aun faltan cosas
+       el archivo de salida. 
+2.06   Se agrega el radio Mayor como elemento guardado en savez
+2.05   Se agrego warning cuando no se encontraron agregados coincidentes
+2.04   Corregido error de main loop. Si no pasaba por filtro no 
+       reseteaba las listas.
+2.03   Corregido el error de ag_popper para agregados con n<=9, que seleccio-
+       naba toda la decena (es decir, si se elegia 1, aparecian 10, 11, etc.)
+2.02   corregido el saver de curvas. Pasa a funcion ag_plot()
+2.01   ag_popper: reemplazo de if any() por if STR in a.label. 
+2.0    Se pasaron todo el script a funciones. Debe verificarse si funciona
+       correctamente si se lo importa
+1.64   Single Plot ahora usa Remove en lugar de Pop, evitando que se
+       eliminen curvas de mas. 
+1.63   Agregado el atributo self.area al método addp de la clase AggregateTime
+       Agregada el área en el saver de variables
+1.62   Corregida la variable a guardar en el saver. Ahora guarda individual y no promedio
+1.61   Mejorado el saver de las variables Amp y desfa
+1.6    Agregado el saver de amp y fase al final y el desfase en pi del campo
+1.56   Agregada la frecuencia en segundos y el numero de agregados en el print
+1.55   Corregido el phi0 de los ajustes para que vaya de -pi a pi
+1.5    Agregada la curva media de los ajuestes a los gráficos. 
+1.4.3  Automatizado la dirección de guardado de las curvas
+1.4.21 cambiada la ruta de guardado de las curvas
+       Modificada SIGLE PLOT TESTER para graficar más de una
+1.4.2  Curva saver corrido de cell
+1.4.1  Corrección adicional de ángulos de agregados (<-90)
+       Corregido el header del savetxt de las curvas
+1.4     Agregado opción de guardar curvas de agregados
+1.36.1 Agregado el error de la Amplitud (considerando la dispersion)
+1.36: Agregado el error en phi0 medio y el desfasaje 
+1.35: Agregada la figura 79 para Agregados entre 10 y 20
+1.3: Separado en dos figuras el total y figuras mas 
+    ajustes de agregados del 0 al 10
+    Agregadas sentencias para verificar curvas aisladas. 
