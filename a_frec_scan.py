@@ -1,7 +1,7 @@
 '''
 In this example, this module is placed in the same folder as the .csv files of the aggregates.
 The location of amp_tools_2 can by added using sys.path.append() or could be inside the current location.
-'fase_campo' and 'frec' was obtained by the sync. module 'aa_im_intensity.py' (light sync)
+'fase_campo' and 'frec' was obtained by the sync. module 'aa_im_intensity.py' (light sync) aca tambien
 
 Probando edits
 '''
