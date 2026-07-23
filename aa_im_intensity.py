@@ -171,7 +171,7 @@ print('Fase: {fa:1.5f}'.format(fa=fase2))
 # plt.plot(x2, j2, 'o')
 # plt.plot(xx2, yy2, '-r')
 
-# fase_10 = - 2*pi*b2/a2  #Calculo de Gus: https://docs.google.com/document/d/1TF0Ypa66JRQ-ClWuT1f-AhAJcUnSwU9SfemTysnOwf4/edit
+# fase_10 = - 2*pi*b2/a2  # Phase derivation reference kept in private_notes/
 
 # fase_10b = np.mod(fase_10, 2*pi)
 
