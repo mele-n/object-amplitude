@@ -96,7 +96,7 @@ b = result.params['b'].value
 yy0 = 1/frec*frate*xx + 0
 yy = a*xx+b
 
-fase = - 2*pi*b/a  #Calculo de Gus: https://docs.google.com/document/d/1TF0Ypa66JRQ-ClWuT1f-AhAJcUnSwU9SfemTysnOwf4/edit
+fase = - 2*pi*b/a  # Phase derivation reference kept in private_notes/ (not tracked in this repo)
 
 fase2 = np.mod(fase, 2*pi)
 
