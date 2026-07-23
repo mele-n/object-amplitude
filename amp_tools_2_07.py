@@ -441,7 +441,7 @@ def main_loop(todos, frec, f0, len_pt=len_pt, dif_max=dif_max,
         #================
         # frec_s = str(int(frec*1000))
 
-        # save_folder = '/home/nico/Documentos/Medidas Doctorado/Microscopio/COVID/Campo Alterno/Capa de Cloroformo/DC AC/Alto DC/dil 1-1000/LED B/'+frec_s+'/curvas/'
+        # save_folder = 'folder_cd'
         
     return todos_t
 
