@@ -24,55 +24,27 @@ Names of some variables and functions were set in spanish. Sorry for the confusi
 v 2.07
 """
 
-import numpy as np;
-# import scipy.optimize as opt;
+import numpy as np
 import matplotlib.pyplot as plt
-# import uncertainties as un
-# from scipy.io import wavfile
 import lmfit as lm
-import glob 
-# import pandas as pd
-# from scipy.io import wavfile
+import glob
 from scipy import signal
 import matplotlib.cm as cm
 from tqdm import tqdm
-import os 
+import os
 
 pi = np.pi
-# fname = ['frame000%2d'%k for k in range(30, 60)]
 
 fname = glob.glob("*.csv")
 fname.sort()
-# fname = 'frame00030.png (red)'
 ext = '.csv'
 
-# frec_redo = 0.1 #Frecuencia en Hertz
-# frec = 0.09998195582770436 #calculada a partir de aa_im_intensity.py o aa_load_int.py
-# frate = 25 #frame rate
-# f_ref = 0 #frame que se tomará como inicial para el MAIL LOOP
-# f0 = 705 #número del frame del video completo del cual se comenzó a estudiar menos 1
-# # audioname = 'frag5.wav'  # Archivo de audio extraido del video
-# step = 0.1 #step del vector creado para el fiteo (respecto al num de frames)
-# fase_campo = 1.16409 + pi # fase calculada a partir de aa_im_intensity.py o aa_load_int.py
-# #El pi agregado en la fase de campo es debido a un error en la interpretación
-# #Los cruces por cero asignados son cuando el campo se hace negativo (debe ser
-# #la conexion del LED invertida)
-# # fase_campo = 4.4083
-# pop = [13, 4, 3, 1] #Colocar en orden descendente
-# #Restricciones en curvas: 
+# Curve filtering thresholds (see main_loop() docstring for details)
 len_pt = 300
 dif_max = 90
 dif_min = 60
 
 curvas_rec = False  # Si True, guarda un .csv de cada curva de agregados
-
-# params = lm.Parameters()
-# params.add('A', value=1,  vary=0, min=0)
-# params.add('f', value=frec/frate,  vary=0, min=0)
-# params.add('phi0', value=fase_campo, vary=True)
-# params.add('C', value=0,   vary=True)
-# params.add('acdc', value=4.2/7.1, vary=1, min=0, max=10)
-# params.add('ac', value=4.2, vary=1, min=0, max=10)
 
 ua = 0.8 #Umbral porcentual del área rango [0:1]
 uc = 20 #umbral de distancia al centroide (unidad: pixel)
@@ -82,9 +54,6 @@ nfig = 15 #Numero de figura preliminar
 #%% CLASS DEF
 #===========================================================================
 
-# def seno(x, acdc, f, phi0, C):
-#     return acdc*np.sin(x*f*2*np.pi+phi0) + C
-
 def seno(x, acdc, f, phi0, C):
     return acdc*np.sin(x*f*2*np.pi+phi0) + C
 
@@ -93,8 +62,6 @@ def cuadrada(x, A, f, phi0, C):
 
 def tansen(x, A, f, phi0, C, acdc):
     return A*np.arctan(acdc*np.sin(x*f*2*np.pi+phi0))*180/pi + C
-
-# gmodel = lm.Model(tansen, independent_vars='x', params=params)
 
 def set_params(fase_campo, frec, frate, model='tansen'):
     ''' Setting and initializing parameters for lmfit implementation
@@ -244,12 +211,7 @@ class AggregateTime():
         self.f0 = f0
         self.rM = rM
         self.rm = rm
-        # if self.flist:
-             # self.result = gmodel.fit(self.ang_t, x=self.flist, params=params)
-        # else:            
-        #     self.result = False
-        # self.result = gmodel.fit(self.ang_t, x=self.flist, params=a_params)
-            
+
     def addp(self, part, frame, area, rM, rm):
         ''' Tool to add a particle to AggregateTime() object
         part: Aggregate() object to be added.
@@ -341,17 +303,9 @@ def frame_scan(fname, ua, uc, debug=0):
         p = Aggregate(x, y, a, ang, ua, uc, rM, rm)
         f_ag.append(p) #particulas de cada frame
     
-    return f_ag      
-   
-# todas = []
+    return f_ag
 
-# barra1 = tqdm(fname)
-# for a in barra1:
-#     barra1.set_description('Frame')
-#     f_ag = frame_scan(a, ua, uc)
-#     todas.append(f_ag)
-    
-    
+
 #%% MAIN LOOP
 #=================================================================
     
@@ -375,20 +329,16 @@ def main_loop(todos, frec, f0, len_pt=len_pt, dif_max=dif_max,
     Returns:
     todos_t: list. Nested list of all the AggregateTime() that passed the filtering. 
     '''
-    # p0 = todas[0][0]
     p_tang = []; frame = []; p_tang2 = []; todos_t = []; pmean=[]
-    # CC = [] ; BB=[]; #cent=[]
-    
+
     barra2 = tqdm(todos[f_ref])
     #Iterates, within a reference frame f_ref, all the particles in it
     for n, p in enumerate(barra2): #Elijo el frame de referencia inicial
         barra2.set_description('Main Loop')
-        # cent.append([p0.x, p0.y])
         pframes = []
         ag_label = "Agregado {npart:d} área(0)={area:5.0f}".format(npart=n+1,area=p.a)
-        
+
         pmean = AggregateTime(f0, label=ag_label)
-        # print(pmean.label)
         
         for fr in range(len(todos)): #Iterate through each frame looking for a match
 
@@ -422,30 +372,14 @@ def main_loop(todos, frec, f0, len_pt=len_pt, dif_max=dif_max,
             frame = []; 
             p_tang = []; p_tang2 = []
             continue
-        # if min(p0_tang2)<-40:
-        #     frame = []; 
-        #     p0_tang = []; p0_tang2 = []
-        #     continue 
-              
+
         todos_t.append(pmean)
-        # pmean = []
         plt.figure(nfig)
         frame = np.array(frame)
-        # x = frame/frate + 1
-        # plt.plot(x, p0_tang2, 'o', alpha=0.5, label=n+1)
-        frame = []; #p_t = []
+        frame = []
         p_tang = []; p_tang2 = []
-        # plt.legend()
-        
-        #SAVER
-        #================
-        # frec_s = str(int(frec*1000))
 
-        # save_folder = 'folder_cd'
-        
     return todos_t
-
-# todos_t = main_loop(todos, frec_redo)
 
 
 #%% PLOT
@@ -465,29 +399,22 @@ def ang_plot(gmodel, params, todos_t, len_todos, frec, frec_redo, f0,
     ''' 
     
     if todos_t==[]:
-        #print('No se encontraron agregados coincidentes')
         raise Exception('The inserted list todos_t is empty. Probably no matches were found.')
-        return len_todos
-    
+
     plt.figure(1);    plt.cla
     plt.figure(10);    plt.cla
     plt.figure(20);    plt.cla
     plt.figure(100);    plt.cla
 
-    # plt.figure(30);    plt.clf
     A_pt = []; phi0_pt = []; C_pt = []; f_pt = []; desfa = []; acdc_pt = []
     phi0_pterr = []; acdc_pterr = []; area_pt = [] ; area_pterr = []
     rM_pt = [] ; rM_pterr = []
     
     for p, i in enumerate(todos_t):
-        # if len(i.flist)<4:
-        #     continue
-    
         i.fit(gmodel, params, fase_campo, tang=0)
-        y_samp = i.ang_t
+        y_samp = np.array(i.ang_t)
 
         #Defining time and magnetic field
-        
         x = np.arange(0,len_todos, 0.1)+f0
         yf = 10*np.sin(x*frec*2*pi/frate + fase_campo)
             
@@ -508,45 +435,26 @@ def ang_plot(gmodel, params, todos_t, len_todos, frec, frec_redo, f0,
 
     
         if p>=40:
-            #print('Mandale filtro, Rey, que hay muchos agregados')
             print('Too much aggregates.')
             continue
-        
-        
+
         #Todas las curvas juntas
         plt.figure(100)
         plt.plot(fr, y_samp, 'o', label=i.label)  # Plot
 
         #Graficos de a 10 curvas para ver ajustes
-        #Lo hago de a 10 por el cm.tab20.colors que tiene 20 colores
-        if p>=30:
-            plt.figure(30)
-            plt.plot(fr, y_samp-C_pt[-1], 'o', label=i.label,    
-                      color=cm.tab20.colors[2*(p-30)])  # Plot
-            plt.plot(x, fit_curve-C_pt[-1], '-', linewidth=3, 
-                        color=cm.tab20.colors[2*(p-30)+1])  #Fit Plot
-        
-        if p>=20 and p<30:
-            plt.figure(20)
-            plt.plot(fr, y_samp-C_pt[-1], 'o', label=i.label,    
-                      color=cm.tab20.colors[2*(p-20)])  # Plot
-            plt.plot(x, fit_curve-C_pt[-1], '-', linewidth=3, 
-                        color=cm.tab20.colors[2*(p-20)+1])  #Fit Plot
-    
-        if p>=10 and p<20:
-            plt.figure(10)
-            plt.plot(fr, y_samp-C_pt[-1], 'o', label=i.label,    
-                      color=cm.tab20.colors[2*(p-10)])  # Plot
-            plt.plot(x, fit_curve-C_pt[-1], '-', linewidth=3, 
-                        color=cm.tab20.colors[2*(p-10)+1])  #Fit Plot
-        
-        if p<10:
-            plt.figure(1)
-            plt.plot(fr, y_samp-C_pt[-1], 'o', label=i.label,    
-                      color=cm.tab20.colors[2*p])  # Plot
-            plt.plot(x, fit_curve-C_pt[-1], '-', linewidth=3, 
-                        color=cm.tab20.colors[2*p+1])  #Fit Plot
-        
+        #Se agrupan de a 10 porque cm.tab20.colors tiene 20 colores (2 por curva)
+        group_figs = {0: 1, 1: 10, 2: 20, 3: 30}
+        group = p // 10
+        fig_num = group_figs[group]
+        color_idx = p - group*10
+
+        plt.figure(fig_num)
+        plt.plot(fr, y_samp-C_pt[-1], 'o', label=i.label,
+                  color=cm.tab20.colors[2*color_idx])  # Plot
+        plt.plot(x, fit_curve-C_pt[-1], '-', linewidth=3,
+                    color=cm.tab20.colors[2*color_idx+1])  #Fit Plot
+
         #Plot of magnetic field
         Ac = np.arctan(Brel)/pi*180
         yf = Ac*np.sin(x*frec*2*pi/frate + fase_campo)
